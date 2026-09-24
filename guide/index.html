@@ -122,7 +122,7 @@
   }
   .toc a { color: var(--ink); text-decoration: none; font-size: 0.85rem; font-weight: 500; }
   .toc a:hover { color: var(--accent-hover); }
-  .toc-num { font-family: var(--font-mono); color: var(--ink-soft); margin-right: 6px; font-size: 0.78rem; }
+  .toc-num { font-family: var(--font-mono); color: var(--ink-soft); margin-inline-end: 6px; font-size: 0.78rem; }
   @media (max-width: 520px) { .toc { grid-template-columns: 1fr; } }
 
   /* ---- Sections ---- */
@@ -154,11 +154,11 @@
      phrase avec de grands vides entre les mots en gras. */
   ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 12px; }
   ol.steps li {
-    counter-increment: step; position: relative; padding-left: 36px;
+    counter-increment: step; position: relative; padding-inline-start: 36px;
     font-size: 0.9rem; line-height: 1.55;
   }
   ol.steps li::before {
-    content: counter(step); position: absolute; left: 0; top: 0;
+    content: counter(step); position: absolute; inset-inline-start: 0; top: 0;
     width: 24px; height: 24px; border-radius: 50%;
     background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 0.78rem;
     display: flex; align-items: center; justify-content: center;
