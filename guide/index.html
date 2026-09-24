@@ -79,8 +79,9 @@
   /* ---- Hero ---- */
   .hero {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 18px;
+    gap: 14px 18px;
     padding: 22px 24px;
     border-radius: var(--radius);
     background: #14110d;
@@ -93,6 +94,7 @@
     object-fit: cover;
     display: block;
   }
+  .hero-text { flex: 1 1 200px; min-width: 0; }
   .hero-text .eyebrow {
     font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--gold); margin: 0 0 4px;
@@ -213,6 +215,20 @@
   }
 
   footer { text-align: center; color: var(--ink-soft); font-size: 0.76rem; padding-top: 30px; border-top: 1px solid var(--line); }
+
+  .lang-select {
+    flex: none; align-self: flex-start;
+    font: inherit; font-size: 0.78rem; font-weight: 600;
+    padding: 7px 30px 7px 12px; border-radius: var(--radius-pill);
+    background: #2b2327 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23e5b906" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>') no-repeat right 10px center;
+    color: #f5ecd6; border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+    appearance: none; cursor: pointer;
+  }
+  .lang-note {
+    margin: 10px 0 0; font-size: 0.76rem; color: var(--ink-soft);
+    display: none;
+  }
+  .lang-note.visible { display: block; }
 </style>
 
 <div class="wrap">
@@ -224,7 +240,19 @@
       <h1>Maat <span>PDF Reader</span> - guide de démarrage</h1>
       <p>Tout ce qu'il faut pour installer, prendre en main et tester l'application.</p>
     </div>
+    <select class="lang-select" id="langSelect" aria-label="Langue du guide">
+      <option value="fr" selected>Français</option>
+      <option value="en">English</option>
+      <option value="sw">Swahili</option>
+      <option value="zh">中文</option>
+      <option value="ru">Русский</option>
+      <option value="es">Español</option>
+      <option value="ar">العربية</option>
+      <option value="pt">Português</option>
+      <option value="de">Deutsch</option>
+    </select>
   </div>
+  <p class="lang-note" id="langNote">Cette langue arrive bientôt. Le contenu reste affiché en français pour le moment.</p>
 
   <div class="meta-row">
     <span class="pill">Version testée : v0.3.5</span>
@@ -374,6 +402,26 @@
   </footer>
 
 </div>
+
+<script>
+  (function () {
+    var select = document.getElementById("langSelect");
+    var note = document.getElementById("langNote");
+    if (!select || !note) return;
+    try {
+      var stored = localStorage.getItem("maat-guide-lang");
+      if (stored) select.value = stored;
+    } catch (e) {}
+    function apply() {
+      note.classList.toggle("visible", select.value !== "fr");
+      try {
+        localStorage.setItem("maat-guide-lang", select.value);
+      } catch (e) {}
+    }
+    select.addEventListener("change", apply);
+    apply();
+  })();
+</script>
 
 </body>
 </html>
