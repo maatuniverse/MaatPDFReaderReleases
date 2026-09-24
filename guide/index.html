@@ -461,6 +461,14 @@
       try {
         localStorage.setItem("maat-guide-lang", lang);
       } catch (e) {}
+      // Changer de langue redessine la page (RTL, longueurs de texte
+      // differentes) et decale la position de toute section deja visee par
+      // l'ancre de l'URL - on corrige le defilement apres coup, une fois le
+      // nouveau contenu rendu.
+      if (location.hash) {
+        var jumpTarget = document.getElementById(location.hash.slice(1));
+        if (jumpTarget) requestAnimationFrame(function () { jumpTarget.scrollIntoView(); });
+      }
     }
     select.addEventListener("change", apply);
     apply();
