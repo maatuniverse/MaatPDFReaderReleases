@@ -78,6 +78,11 @@
 
   /* ---- Hero ---- */
   .hero {
+    /* Le logo et le selecteur de langue sont des elements d'interface, pas
+       du contenu a lire - ils gardent une position fixe quelle que soit la
+       langue (meme principe que la barre d'outils de l'app). Seul le texte
+       a l'interieur de .hero-text reaffirme le sens RTL pour l'arabe. */
+    direction: ltr;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -87,6 +92,9 @@
     background: #14110d;
     border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
     margin-bottom: 10px;
+  }
+  html[dir="rtl"] .hero-text {
+    direction: rtl;
   }
   .hero-mark {
     width: 56px; height: 56px; flex: none;
