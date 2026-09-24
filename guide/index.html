@@ -146,15 +146,20 @@
     border-top: 1px solid var(--line); background: var(--surface);
   }
 
-  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 10px; }
+  /* Un badge numerote place avec position:absolute plutot que display:flex
+     sur le <li> - flex sur un conteneur au contenu mixte (texte + <strong>)
+     traite chaque fragment de texte comme un item separe et eclate la
+     phrase avec de grands vides entre les mots en gras. */
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 12px; }
   ol.steps li {
-    counter-increment: step; display: flex; gap: 12px; align-items: flex-start;
+    counter-increment: step; position: relative; padding-left: 36px;
     font-size: 0.9rem; line-height: 1.55;
   }
   ol.steps li::before {
-    content: counter(step); flex: none; width: 24px; height: 24px; border-radius: 50%;
+    content: counter(step); position: absolute; left: 0; top: 0;
+    width: 24px; height: 24px; border-radius: 50%;
     background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 0.78rem;
-    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
   }
 
   .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 16px 0; }
