@@ -443,7 +443,26 @@
       var stored = localStorage.getItem("maat-guide-lang");
       if (stored) select.value = stored;
     } catch (e) {}
+    // Quelle section est actuellement visible en haut de l'ecran, avant de
+    // redessiner le contenu - PAS location.hash, qui reste colle a la
+    // derniere ancre cliquee dans le sommaire et ne reflete jamais un
+    // simple defilement manuel (c'etait le bug precedent : changer de
+    // langue ramenait toujours a la derniere section cliquee, meme apres
+    // avoir scrolle ailleurs depuis).
+    function getVisibleSectionId() {
+      var sections = document.querySelectorAll("section[id]");
+      var bestId = null, bestTop = -Infinity;
+      sections.forEach(function (s) {
+        var top = s.getBoundingClientRect().top;
+        if (top <= 80 && top > bestTop) {
+          bestTop = top;
+          bestId = s.id;
+        }
+      });
+      return bestId;
+    }
     function apply() {
+      var visibleId = getVisibleSectionId();
       var lang = select.value;
       var dict = MAAT_I18N[lang] || MAAT_I18N.fr;
       document.querySelectorAll("[data-i18n]").forEach(function (el) {
@@ -462,12 +481,12 @@
         localStorage.setItem("maat-guide-lang", lang);
       } catch (e) {}
       // Changer de langue redessine la page (RTL, longueurs de texte
-      // differentes) et decale la position de toute section deja visee par
-      // l'ancre de l'URL - on corrige le defilement apres coup, une fois le
-      // nouveau contenu rendu.
-      if (location.hash) {
-        var jumpTarget = document.getElementById(location.hash.slice(1));
-        if (jumpTarget) requestAnimationFrame(function () { jumpTarget.scrollIntoView(); });
+      // differentes) et decale la position de la section qu'on regardait -
+      // on la remet en vue, sans jamais forcer un retour a une ancre
+      // cliquee dans le passe.
+      if (visibleId) {
+        var target = document.getElementById(visibleId);
+        if (target) requestAnimationFrame(function () { target.scrollIntoView(); });
       }
     }
     select.addEventListener("change", apply);
